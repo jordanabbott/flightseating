@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 
 
 
@@ -266,7 +267,7 @@ public class Flight
                  break;
                  case 'x': System.exit(0);
              }
-          
+           
         
            String line;
            List<Customer> cusList = new ArrayList<Customer>();
@@ -305,6 +306,36 @@ public class Flight
                 
                if(choice.equals("y"))
                {
+                  ArrayList<String> customers = new ArrayList<String>();
+                   Scanner delCust = new Scanner(new File("customer.txt"));
+                   while(delCust.hasNextLine())
+                   {
+                       String delCustomer = delCust.nextLine();
+                       if(delCustomer.contains(flightCustomers[row][col].customerName))
+                       {   
+                       }
+                       else
+                       {
+                          customers.add(delCustomer);
+                       }
+                         
+                   }
+                   try
+                   {
+                  // FileWriter reWrite = new FileWriter("customer.txt");
+                   BufferedWriter reWrite = new BufferedWriter(new FileWriter("customer.txt"));
+                  for(String c : customers)
+                  {
+                      reWrite.write(c + " ");
+                   //System.out.println(c);   
+                  }
+                   }
+                   catch(IOException x)
+                   {
+                       System.out.println(x);
+                   }
+                    
+                   flightCustomers[row][col].customerName = "null";
                    break;
                }
                else if(choice.equals("n"))
@@ -335,6 +366,7 @@ public class Flight
     {
         String line = "";
      ArrayList<String> customers = new ArrayList<String>();
+    
         int custCount = 0;
     
       try
@@ -343,15 +375,18 @@ public class Flight
        BufferedReader bufferedr = new BufferedReader(new FileReader("customer.txt"));
          while ((line = bufferedr.readLine())!=null)
          {
-           customers.add(line);
+             String custName = line.split(",")[0];
+           customers.add(custName);
            
-         }
-     
+         } 
+      
          String[] custArray = new String[customers.size()];
          custArray = customers.toArray(custArray);
          if(customers.size()==0)
          {
              System.out.println("No Customers Found");
+             System.in.read();
+             readFlight();
          }
          else
          {
@@ -364,10 +399,41 @@ public class Flight
          }
          }
          
+         System.out.println("Search for customer");
+         Scanner scan = new Scanner(System.in);
+         String search = scan.next();
+        
+         int bsResult = Arrays.binarySearch(custArray, search);
+         if(bsResult<0)
+         {
+              System.out.println("not found"); 
+             scan.next();
+             viewCustomers();
+           
+         }
+         if(custArray[bsResult].equals(search))
+         {
+             for(int i = 0; i<12;i++)
+             {
+               for(int j = 0;j<6;j++)
+               {
+                   if(flightCustomers[i][j].customerName.equals(custArray[bsResult]))
+                   {
+                       System.out.println(flightCustomers[i][j].customerName + " " + flightCustomers[i][j].ageType + " " + flightCustomers[i][j].classType + " " + flightCustomers[i][j].seatType);
+                       break;
+                   }
+               }
+             }
+
+         }
+         
+       
+         
       }
       catch(IOException x)
       {
           System.out.println(x);
       }
     }   
+ 
 }

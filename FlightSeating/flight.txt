@@ -7,7 +7,6 @@ null,null,null,null
 null,null,null,null
 null,null,null,null
 null,null,null,null
-asa,qa,First class,Aisle
 null,null,null,null
 null,null,null,null
 null,null,null,null
@@ -29,6 +28,7 @@ null,null,null,null
 null,null,null,null
 null,null,null,null
 null,null,null,null
+bob,adult,Business class,Window
 null,null,null,null
 null,null,null,null
 null,null,null,null
