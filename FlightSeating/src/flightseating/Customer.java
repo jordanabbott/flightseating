@@ -12,10 +12,12 @@ import java.io.*;
  */
 public class Customer 
 {
+    //customer attributes
     public String customerName;
     public String ageType;
     public String classType;
     public String seatType;
+    //constructors
     Customer()
     {
         

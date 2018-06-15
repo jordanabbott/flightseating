@@ -1,1 +1,2 @@
-bob,5,0,adult,Window,Business class
+sas,5,0,a,Window,Business class
+asas,2,3,a,Aisle,First class
