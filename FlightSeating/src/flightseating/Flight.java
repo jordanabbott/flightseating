@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.Writer;
-
+import java.io.RandomAccessFile;
 
 
 public class Flight 
@@ -181,26 +181,50 @@ public class Flight
         {
             //Writes customer details to a text file
          FileWriter writeCust = new FileWriter("customer.txt",true);
-     
-          writeCust.write(name + "," + row +  "," + col + "," + ageType + "," + seatType + "," + classType +  "\r\n");
+         String custToWrite = (name + "," + row +  "," + col + "," + ageType + "," + seatType + "," + classType +  "\r\n");
+          writeCust.write(custToWrite);
           writeCust.close(); 
          //creates customer and adds it to the 2d array
         Customer customer = new Customer(name,ageType,classType,seatType); 
         flightCustomers[row][col] = customer;
-
-        FileWriter write = new FileWriter("flight.txt");
-        //writes the updated customer 2d array back to the text flight
-            for(int writeRow = 0;writeRow < 12 ;writeRow++)
-            {
-               for(int writeCol = 0; writeCol < 6; writeCol++)
-               {
-                    write.write(flightCustomers[writeRow][writeCol].customerName + ","
-                              + flightCustomers[writeRow][writeCol].ageType + ","
-                              + flightCustomers[writeRow][writeCol].classType + ","
-                              + flightCustomers[writeRow][writeCol].seatType + "\r\n");	
-               }
-            }
-          write.close();     
+        String raSeatType = seatType.substring(0,3);
+        String raClassType = classType.substring(0,3);
+        System.out.println(raClassType);
+        System.out.println(raSeatType);
+        String raCust;
+        if(row>=10)
+        {
+        raCust = (row + "," + col + "," + ageType + ","  + raSeatType + "," + raClassType +"\r\n");
+        }
+       else
+        {
+        raCust =("0"+row + "," + col + "," + ageType + ","  + raSeatType + "," + raClassType +"\r\n");
+        }
+        RandomAccessFile file = new RandomAccessFile("raflight.txt","rw");
+        int pos = (row*6) + col;
+        if(col == 0)
+        {
+            pos = 0+col;
+        }
+         int writeAt = pos*20;
+            file.seek(writeAt);
+            file.write(raCust.getBytes());
+          
+            file.close();
+        
+//        FileWriter write = new FileWriter("flight.txt");
+//         //writes the updated customer 2d array back to the text flight
+//            for(int writeRow = 0;writeRow < 12 ;writeRow++)
+//            {
+//               for(int writeCol = 0; writeCol < 6; writeCol++)
+//               {
+//                    write.write(flightCustomers[writeRow][writeCol].customerName + ","
+//                              + flightCustomers[writeRow][writeCol].ageType + ","
+//                              + flightCustomers[writeRow][writeCol].classType + ","
+//                              + flightCustomers[writeRow][writeCol].seatType + "\r\n");	
+//               }
+//            }
+//          write.close();     
         }
         catch (IOException x)
         {
@@ -412,6 +436,8 @@ public class Flight
          //binary search for customer
          int bsResult = Arrays.binarySearch(custArray, search);
          //checks if customer can be found
+
+         
          if(bsResult<0)
          {
               System.out.println("not found"); 
@@ -421,6 +447,7 @@ public class Flight
          //if customer is found, output customer info
          if(custArray[bsResult].equals(search))
          {
+
              for(int i = 0; i<12;i++)
              {
                for(int j = 0;j<6;j++)
